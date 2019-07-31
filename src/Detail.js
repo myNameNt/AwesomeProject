@@ -1,17 +1,32 @@
 import React,{Component} from 'react'
-import {View,Text} from 'react-native'
+import {View,Text,Button} from 'react-native'
 
 export default class Detail extends Component{
     constructor(props){
         super(props)
         this.state = {
-            title: '乱我心者昨日之日不可留'
+            title: '乱我心者昨日之日不可留,'
         }
+        this.onGoHome = this.onGoHome.bind(this)
+    }
+    onGoHome(){
+        this.props.navigation.push('HomePageOne',{data:'我是从detail那边过来的'})
+    }
+    componentWillUnmount(){
+        console.log('home uncomponet')
+        debugger
     }
     render(){
+        const title = this.props.navigation.getParam('title','没有传数据过来')
+        const item = this.props.navigation.getParam('item','没有传数据过来')
         return(
             <View>
                 <Text>{this.state.title}</Text>
+                <Text>{title}</Text>
+                <View>
+                <Text>{item}</Text>
+                </View>
+                <Button title='go home' onPress={this.onGoHome} />
             </View>
         )
     }
