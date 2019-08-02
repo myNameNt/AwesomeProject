@@ -24,25 +24,34 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {withNavigation,createMaterialTopTabNavigator,} from 'react-navigation'
-import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs'
-function HomePageTwo(){
+import {withNavigation,createMaterialTopTabNavigator,createBottomTabNavigator} from 'react-navigation'
+
+import { BottomTabNavigatorConfig,StackNavigatorConfig } from './utils/config'
+import {mergeJSON} from '../src/utils/util'
+function Chun(){
   return (
     <View>
-      <Text>Home page two</Text>
+      <Text>Home page Chun</Text>
     </View>
   )
 }
-class HomePageThree extends Component{
+function Hua(){
+  return (
+    <View>
+      <Text>Home page Hua</Text>
+    </View>
+  )
+}
+class Qiu extends Component{
   render(){
     return(
       <View>
-        <Text>home page three</Text>
+        <Text>home page Qiu</Text>
       </View>
     )
   }
 }
-class HomePageOne extends Component{
+class Yue extends Component{
   constructor(){
     super()
     this.state = {}
@@ -51,7 +60,8 @@ class HomePageOne extends Component{
   onGoDetail(){
     this.props.navigation.navigate('Detail',{
       title:'弃我去者明日之日多烦忧。',
-      item:'长帆破浪会有时，直挂云帆济沧海。'
+      item:'长帆破浪会有时，直挂云帆济沧海。',
+      name:'0.0'
     })
   }
   componentWillUnmount(){
@@ -152,38 +162,48 @@ const styles = StyleSheet.create({
   },
 });
 
-const Home = createMaterialBottomTabNavigator(
+const Home = createBottomTabNavigator(
   {
-    HomePageOne: {
-      screen: HomePageOne
+    Chun: {
+      screen: Chun
     },
-    HomePageTwo: {
-      screen: HomePageTwo
+    Hua: {
+      screen: Hua
     },
-    HomePageThree: {
-      screen: HomePageThree,
-      navigationOptions: ({navigation}) => ({
-        tabBarColor: '#3F51B5',
-        // tabBarIcon: ({focused, tintColor}) => {
-        //     const {routeName} = navigation.state;
-        //     let iconName;
-        //     if (routeName === 'home') {
-        //         iconName = `ios-home${focused ? '' : '-outline'}`;
-        //     } else if (routeName === 'my') {
-        //         iconName = `ios-options${focused ? '' : '-outline'}`;
-        //     }
-        //     return <Ionicons name={iconName} size={25} color={tintColor}/>
-        //     },
-        title: '我的',
-      })
+    Qiu: {
+      screen: Qiu,
+    },
+    Yue: {
+      screen: Yue
     }
   },
-  {
-    initialRouteName: 'HomePageThree',
-    // activeColor: '#f0edf6',
-    // inactiveColor: '#3e2465',
-    // barStyle: { backgroundColor: '#694fad' },
-  }
+  BottomTabNavigatorConfig({
+    initialRouteName:'Yue'
+  })
 )
+
+const pages = {
+  Chun,
+  Hua,
+  Qiu,
+  Yue
+}
+
+Home.navigationOptions = ({ navigation, }) => {
+  // 设置tabBar的标题
+  const { routes, index, } = navigation.state;
+  const { routeName, params, } = routes[index];
+  const __defaultNavigationOptions = StackNavigatorConfig({ initialRouteName: routeName, }).defaultNavigationOptions;
+  const __navigationOptions = pages[routeName].navigationOptions;
+  let targetNavigationOptions = {};
+  if (typeof (__navigationOptions) === 'function') {
+    targetNavigationOptions = __navigationOptions({ navigation, params, });
+  } else {
+    targetNavigationOptions = { ...__navigationOptions, };
+  }
+  mergeJSON(__defaultNavigationOptions, targetNavigationOptions);
+  return targetNavigationOptions;
+};
+
 
 export default Home;

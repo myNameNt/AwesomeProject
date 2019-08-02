@@ -1,22 +1,26 @@
-import {createStackNavigator,createAppContainer,createMaterialTopTabNavigator} from 'react-navigation'
-import {Easing  ,Animated} from 'react-native'
-import App from './Home'
+import {createStackNavigator,createAppContainer} from 'react-navigation'
+import {Easing  ,Animated,View,Text,Dimensions} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import React from 'react'
+// import TitleBar from './components/TitleBar'
+import Home from './Home'
 import Detail from './Detail'
+import About from './About'
 
-const RootStackNavigator = createStackNavigator({
-  Home:{
-    screen: App,
-    navigationOptions:{
-      headerTitle: 'Home~~'
-    }
-  },
-  Detail:{
-    screen: Detail,
-    navigationOptions:{
-      headerTitle: 'Detail~~'
+const {width,height} = Dimensions.get('screen')
+const RootStackNavigator = createStackNavigator(
+  {
+    Home:{
+      screen: Home,
+    },
+    Detail:{
+      screen: Detail,
+    },
+    About: {
+      screen: About,
     }
   }
-})
+)
 
 // const AppNavigator  = createStackNavigator(
 //     {
